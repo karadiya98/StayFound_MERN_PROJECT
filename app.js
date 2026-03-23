@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
-const port =7860;
 const listing=require("./models/listing");
 const userdata=require("./models/customer")
 const multer  = require('multer');
@@ -167,10 +166,11 @@ app.get("/admin",(req,res)=>
     res.render("admin.ejs")
 })
 
-app.listen(port,(req,res)=>
-{
-    console.log("the server is started at port 7860");
-})
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+    console.log(`✨ [StayFound] Live on port ${port}`);
+});
 
 
 app.use((req,res)=>
