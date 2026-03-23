@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust | <%= typeof title !== 'undefined' ? title : 'Book Unique Stays' %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --brand: #fe424d; --dark: #222; --light-gray: #717171; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; display: flex; flex-direction: column; min-height: 100vh; background-color: #fff; }
+        
+        /* Navbar */
+        .navbar { height: 5rem; background: white; border-bottom: 1px solid #ebebeb; }
+        .navbar-brand { color: var(--brand) !important; font-weight: 700; font-size: 1.5rem; }
+        .nav-link { color: var(--dark) !important; font-weight: 500; margin: 0 1rem; }
+        
+        /* Show Page Specifics */
+        .show-img { height: 30rem; width: 100%; object-fit: cover; border-radius: 1.5rem; }
+        .show-card { border: none !important; }
+        .btn-reserve { background: linear-gradient(to right, #E61E4D 0%, #E31C5F 50%, #D70466 100%); color: white; border: none; font-weight: 600; padding: 0.8rem 2rem; border-radius: 0.5rem; width: 100%; }
+        
+        /* Footer */
+        footer { background-color: #f7f7f7; border-top: 1px solid #dddddd; padding: 3rem 0; margin-top: auto; text-align: center; }
+        .footer-links a { text-decoration: none; color: var(--dark); margin: 0 0.5rem; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md sticky-top px-md-5">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i> wanderlust</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/listings">Explore</a>
+                <a class="nav-link fw-bold text-danger" href="/listings/new">Airbnb your home</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        
+    
+
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-12 mb-3">
+        <h2 class="fw-bold"><%= specificlistings.title %></h2>
+    </div>
+
+    <div class="col-lg-8 col-md-10 col-12">
+        <div class="card show-card">
+            <img src="<%= specificlistings.image.url %>" class="card-img show-img shadow-sm" alt="listing_image">
+            <div class="card-body px-0">
+                <p class="text-muted mb-4">
+                    <i class="fa-solid fa-location-dot me-1"></i> <%= specificlistings.location %>, <%= specificlistings.country %>
+                </p>
+
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="fw-bold border-bottom pb-3">About this place</h4>
+                        <p class="fs-5 mt-3 text-secondary">
+                            <%= specificlistings.description %>
+                        </p>
+                        
+                        <div class="amenities mt-5">
+                            <h5 class="fw-bold mb-4">What this place offers</h5>
+                            <div class="row g-3">
+                                <div class="col-6"><i class="fa-solid fa-wifi me-2"></i> Fast Wifi</div>
+                                <div class="col-6"><i class="fa-solid fa-kitchen-set me-2"></i> Kitchen</div>
+                                <div class="col-6"><i class="fa-solid fa-car me-2"></i> Free Parking</div>
+                                <div class="col-6"><i class="fa-solid fa-snowflake me-2"></i> Air Conditioning</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="card shadow p-4 rounded-4 border sticky-top" style="top: 100px;">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="fw-bold mb-0">₹<%= specificlistings.price.toLocaleString("en-IN") %> <span class="fs-6 fw-normal text-muted">/ night</span></h3>
+                            </div>
+                            
+                            <div class="border rounded-3 mb-3 p-2">
+                                <div class="row">
+                                    <div class="col-6 border-end">
+                                        <label class="x-small fw-bold">CHECK-IN</label>
+                                        <p class="mb-0 small text-muted">Add date</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="x-small fw-bold">CHECKOUT</label>
+                                        <p class="mb-0 small text-muted">Add date</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-reserve">Reserve</button>
+                            <p class="text-center mt-2 text-muted small">You won't be charged yet</p>
+                            
+                            <hr>
+                            <div class="d-flex justify-content-between fw-bold fs-5">
+                                <span>Total</span>
+                                <span>₹<%= specificlistings.price.toLocaleString("en-IN") %></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-5 d-flex gap-3">
+                    <a href="/listings/<%= specificlistings._id %>/edit" class="btn btn-dark px-4 py-2">Edit Listing</a>
+                    <form method="POST" action="/listings/<%= specificlistings._id %>?_method=DELETE">
+                        <button class="btn btn-outline-danger px-4 py-2">Delete This Listing</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    </div>
+
+    <footer>
+        <div class="footer-socials mb-3">
+            <i class="fa-brands fa-square-facebook fs-3 mx-2"></i>
+            <i class="fa-brands fa-square-instagram fs-3 mx-2"></i>
+            <i class="fa-brands fa-linkedin fs-3 mx-2"></i>
+        </div>
+        <div class="footer-links">
+            <p>&copy; 2026 Wanderlust Private Limited · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

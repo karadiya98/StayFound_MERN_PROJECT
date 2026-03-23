@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="form-card">
+    <h2>List your Place</h2>
+    <form action="/listings/add" method="POST" enctype="multipart/form-data">
+        <div class="field">
+            <label>Title</label>
+            <input type="text" name="title" required>
+        </div>
+
+        <div class="field">
+            <label>Description</label>
+            <textarea name="description" required></textarea>
+        </div>
+
+        <div class="field">
+            <label>Upload Image File</label>
+            <input type="file" name="image" accept="image/*" required>
+        </div>
+
+        <div class="row">
+            <div class="field">
+                <label>Price</label>
+                <input type="number" name="price" required>
+            </div>
+            <div class="field">
+                <label>Country</label>
+                <input type="text" name="country" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Location</label>
+            <input type="text" name="location" required>
+        </div>
+
+        <button type="submit">Create Listing</button>
+    </form>
+</div>
+</body>
+</html>

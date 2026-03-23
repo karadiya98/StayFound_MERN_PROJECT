@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - Airbnb Clone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff385c; /* Airbnb Pink/Red */
+            --bg-color: #f7f7f7;
+            --text-color: #222222;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: var(--text-color);
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .field {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            box-sizing: border-box; /* Crucial for padding */
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* Side-by-side inputs for City and Country */
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .row .field {
+            flex: 1;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: #e31c5f;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        p {
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Create an Account</h2>
+    <form action="/signup" method="POST">
+        <div class="field">
+            <label>Full Name</label>
+            <input type="text" name="Name" placeholder="John Doe" required>
+        </div>
+
+        <div class="field">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Min. 8 characters" required>
+        </div>
+
+        <div class="field">
+            <label>Phone Number</label>
+            <input type="number" name="PhoneNumber" placeholder="9876543210" required>
+        </div>
+
+        <div class="field">
+            <label>Street Address</label>
+            <input type="text" name="Address" placeholder="123 Main St" required>
+        </div>
+
+        <div class="row">
+            <div class="field">
+                <label>City</label>
+                <input type="text" name="location" placeholder="City" required>
+            </div>
+            <div class="field">
+                <label>Country</label>
+                <input type="text" name="country" placeholder="Country" required>
+            </div>
+        </div>
+        
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="/login">Login here</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust | All Listings</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; padding: 20px; }
+        h1 { text-align: center; color: #333; margin-bottom: 30px; }
+
+        /* Container for the cards */
+        .listings-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        /* The Clickable Box */
+        .listing-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            width: 300px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-body { padding: 15px; }
+        .card-title { font-weight: bold; font-size: 1.2rem; margin: 0; color: #fe424d; /* Airbnb-like red */ }
+        .card-location { color: #777; font-size: 0.9rem; margin-top: 5px; }
+        .card-price { font-size: 1.1rem; margin-top: 10px; font-weight: 600; }
+        .card-price span { font-weight: 400; color: #555; }
+    </style>
+</head>
+<body>
+
+    <h1>Explore Amazing Places</h1>
+
+                <div style="text-align: center; margin-bottom: 20px;">
+    <% if (currUser) { %> 
+        <form action="/listings/add" method="GET">
+            <button type="submit" style="padding: 10px 20px; cursor: pointer;">Add New Listing</button>
+        </form>
+    <% } %>
+</div>
+            
+    
+
+    <div class="listings-container">
+        <% for(let listing of allListings) { %>
+            <a href="/listings/<%= listing._id %>" class="listing-card-link">
+                <div class="card">
+                    <img src="<%= listing.image.url %>" class="card-img" alt="listing_image">
+                    <div class="card-body">
+                        <p class="card-title"><%= listing.title %></p>
+                        <p class="card-location"><%= listing.location %>, <%= listing.country %></p>
+                        <p class="card-price">
+                            ₹<%= listing.price.toLocaleString("en-IN") %> <span>/ night</span>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+
+</body>
+</html>

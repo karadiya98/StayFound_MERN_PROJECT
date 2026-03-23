@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="form-container">
+    <h2>Login</h2>
+    <form action="/login" method="POST">
+        <div class="field">
+            <label>Name or Phone Number</label>
+            <input type="text" name="Name" placeholder="Enter your Name" required>
+        </div>
+
+        <div class="field">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit">Login</button>
+    </form>
+    <p>New here? <a href="/signup">Create an account</a></p>
+</div>
+</body>
+</html>
