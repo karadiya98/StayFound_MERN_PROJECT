@@ -65,6 +65,7 @@ app.post("/listings/add",isLoggedIn, upload.single("image"), async (req, res) =>
         const imageUrl = req.file ? `/uploads/${req.file.filename}` : "";
 
         const newPlace = new listing({
+            
             title,
             description,
             image: { 
@@ -161,11 +162,34 @@ app.post("/login", async (req, res) => {
 
 
 // ------------------------------------------- ADMIN_PANEL ----------------------------------------------------------
-app.get("/admin",(req,res)=>
+app.get("/admin",async (req,res)=>
 {
-    res.render("admin.ejs")
+    const allListings = await listing.find({}); 
+    res.render("admin/admin.ejs", { allListings });
 })
 
+app.get("/admin/listings",async (req,res)=>
+{
+    const allListings = await listing.find({}); 
+    res.render("admin/admin_listings.ejs", { allListings });
+})
+
+app.get("/admin/users", async (req,res)=>
+{
+   const allusers = await userdata.find({});
+   const alllistings = await listing.find({ Name: "ADMIN" });
+   const name = req.session.user?.Name;
+   console.log(name); 
+
+    res.render("admin/users.ejs",{allusers,alllistings});
+})
+
+
+
+
+
+
+//----------------------------------------------------------------------------------------------------------
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {

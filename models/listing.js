@@ -3,6 +3,12 @@ const sch = mongoose.Schema;
 
 
 const listingSchema = new sch({
+
+    Name: {
+        type: String,
+        default: "ADMIN"
+    },
+
     title: {
         type: String,
         required: [true, "Title is required"],
