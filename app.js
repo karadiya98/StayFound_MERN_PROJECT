@@ -64,8 +64,9 @@ app.post("/listings/add",isLoggedIn, upload.single("image"), async (req, res) =>
         let { title, description, price, location, country } = req.body;
         const imageUrl = req.file ? `/uploads/${req.file.filename}` : "";
 
+        const currentusername = req.session?.user?.NAME ?? "ADMIN";
         const newPlace = new listing({
-            
+            currentusername,
             title,
             description,
             image: { 
@@ -76,6 +77,7 @@ app.post("/listings/add",isLoggedIn, upload.single("image"), async (req, res) =>
             location,
             country
         });
+        
         await newPlace.save();
         res.redirect("/listings");
 
@@ -158,7 +160,16 @@ app.post("/login", async (req, res) => {
 });
 
 
-
+app.get("/logout", (req, res) => {
+    
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Logout Error:", err);
+            return res.redirect("/login"); 
+        }
+        res.redirect("/login");
+    });
+});
 
 
 // ------------------------------------------- ADMIN_PANEL ----------------------------------------------------------
@@ -177,10 +188,8 @@ app.get("/admin/listings",async (req,res)=>
 app.get("/admin/users", async (req,res)=>
 {
    const allusers = await userdata.find({});
-   const alllistings = await listing.find({ Name: "ADMIN" });
-   const name = req.session.user?.Name;
-   console.log(name); 
-
+   const alllistings = await listing.find({ Name: { $ne: "ADMIN" } });
+   
     res.render("admin/users.ejs",{allusers,alllistings});
 })
 

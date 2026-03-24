@@ -3,159 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup - Airbnb Clone</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+     <title>Stayforward Rental Website</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 95 C 40 85, 30 70, 30 50 C 30 30, 40 15, 50 5 L 50 25 C 60 25, 75 40, 75 60 C 75 75, 65 85, 55 90%22 fill=%22%235c7c5a%22/></svg>">
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --primary-color: #ff385c; /* Airbnb Pink/Red */
-            --bg-color: #f7f7f7;
-            --text-color: #222222;
+            --forest: #1a241d;
+            --leaf: #5c7c5a;
+            --clay: #d4a373;
+            --cream: #fdfdfb;
+            --white: #ffffff;
+            --border: #edf0ee;
+            --text-main: #2d3e31;
+            --text-muted: #6b7280;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
+            padding: 20px;
         }
 
-        .form-container {
-            background: #ffffff;
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        /* The Container */
+        .signup-card {
+            background: var(--white);
             width: 100%;
-            max-width: 450px;
+            max-width: 960px;
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(26, 36, 29, 0.08);
+            border: 1px solid var(--border);
         }
 
-        h2 {
-            margin-top: 0;
-            color: var(--text-color);
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 1.5rem;
+        /* Left Side: Brand Experience */
+        .brand-panel {
+            background-color: var(--forest);
+            background-image: linear-gradient(rgba(26, 36, 29, 0.6), rgba(26, 36, 29, 0.9)), 
+                              url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=800&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: var(--white);
         }
 
-        .field {
-            margin-bottom: 1.2rem;
+        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: 1px; }
+
+        .brand-panel h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
         }
 
-        label {
+        .feature-list { list-style: none; margin-top: 40px; }
+        .feature-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            margin-bottom: 20px; 
+            font-size: 0.95rem; 
+            opacity: 0.9;
+        }
+        .feature-item i { color: var(--clay); font-size: 1.1rem; }
+
+        /* Right Side: Interactive Form */
+        .form-panel {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header { margin-bottom: 35px; }
+        .form-header h3 { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+        .form-header p { color: var(--text-muted); font-size: 0.95rem; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .full-width { grid-column: span 2; }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label {
             display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #555;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            color: var(--leaf);
         }
 
         input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 14px 16px;
+            background: var(--cream);
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            font-family: inherit;
             font-size: 0.95rem;
-            box-sizing: border-box; /* Crucial for padding */
-            transition: border-color 0.3s ease;
+            color: var(--text-main);
+            transition: all 0.3s ease;
         }
 
         input:focus {
             outline: none;
-            border-color: var(--primary-color);
+            background: var(--white);
+            border-color: var(--leaf);
+            box-shadow: 0 0 0 4px rgba(92, 124, 90, 0.08);
         }
 
-        /* Side-by-side inputs for City and Country */
-        .row {
-            display: flex;
-            gap: 15px;
-        }
-
-        .row .field {
-            flex: 1;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--primary-color);
+        .btn-register {
+            background: var(--forest);
             color: white;
+            padding: 16px;
+            border-radius: 100px;
             border: none;
-            border-radius: 8px;
+            font-weight: 700;
             font-size: 1rem;
-            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.1s ease, background-color 0.3s ease;
-            margin-top: 1rem;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        button:hover {
-            background-color: #e31c5f;
+        .btn-register:hover {
+            background: var(--leaf);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(45, 62, 49, 0.15);
         }
 
-        button:active {
-            transform: scale(0.98);
-        }
-
-        p {
+        .login-cta {
             text-align: center;
+            margin-top: 30px;
             font-size: 0.9rem;
-            margin-top: 1.5rem;
-            color: #666;
+            color: var(--text-muted);
         }
 
-        a {
-            color: var(--primary-color);
+        .login-cta a {
+            color: var(--leaf);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
         }
 
-        a:hover {
-            text-decoration: underline;
+        /* Mobile Optimization */
+        @media (max-width: 850px) {
+            .signup-card { grid-template-columns: 1fr; max-width: 480px; }
+            .brand-panel { display: none; }
+            .form-panel { padding: 40px 30px; }
         }
     </style>
 </head>
 <body>
 
-<div class="form-container">
-    <h2>Create an Account</h2>
-    <form action="/signup" method="POST">
-        <div class="field">
-            <label>Full Name</label>
-            <input type="text" name="Name" placeholder="John Doe" required>
-        </div>
-
-        <div class="field">
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Min. 8 characters" required>
-        </div>
-
-        <div class="field">
-            <label>Phone Number</label>
-            <input type="number" name="PhoneNumber" placeholder="9876543210" required>
-        </div>
-
-        <div class="field">
-            <label>Street Address</label>
-            <input type="text" name="Address" placeholder="123 Main St" required>
-        </div>
-
-        <div class="row">
-            <div class="field">
-                <label>City</label>
-                <input type="text" name="location" placeholder="City" required>
+    <div class="signup-card">
+        <div class="brand-panel">
+            <div class="logo-area">
+                <i class="fa-solid fa-leaf"></i> STAYFORWARD
             </div>
-            <div class="field">
-                <label>Country</label>
-                <input type="text" name="country" placeholder="Country" required>
+            
+            <div class="brand-content">
+                <h2>Designed for <br>the modern <br>explorer.</h2>
+                <ul class="feature-list">
+                    <li class="feature-item"><i class="fa-solid fa-circle-check"></i> 100% Biophilic Spaces</li>
+                    <li class="feature-item"><i class="fa-solid fa-circle-check"></i> Sustainable Luxury Gear</li>
+                    <li class="feature-item"><i class="fa-solid fa-circle-check"></i> 24/7 Digital Concierge</li>
+                </ul>
             </div>
+
+            <p style="font-size: 0.8rem; opacity: 0.6;">© 2026 Stayforward Global</p>
         </div>
-        
-        <button type="submit">Register</button>
-    </form>
-    <p>Already have an account? <a href="/login">Login here</a></p>
-</div>
+
+        <div class="form-panel">
+            <div class="form-header">
+                <h3>Get Started</h3>
+                <p>Create your account to unlock the collection.</p>
+            </div>
+
+            <form action="/signup" method="POST" class="form-grid">
+                <div class="input-group full-width">
+                    <label>Full Name</label>
+                    <input type="text" name="Name" placeholder="Ali Haider" required>
+                </div>
+
+                <div class="input-group full-width">
+                    <label>Create Password</label>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </div>
+
+                <div class="input-group full-width">
+                    <label>Mobile Number</label>
+                    <input type="tel" name="PhoneNumber" placeholder="+91 00000 00000" required>
+                </div>
+
+                <div class="input-group full-width">
+                    <label>Address</label>
+                    <input type="text" name="Address" placeholder="sedrana" required>
+                </div>
+
+                <div class="input-group">
+                    <label>City</label>
+                    <input type="text" name="location" placeholder="Vadodara" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Country</label>
+                    <input type="text" name="country" placeholder="India" required>
+                </div>
+
+                <button type="submit" class="btn-register full-width">
+                    Create Account <i class="fa-solid fa-arrow-right-long"></i>
+                </button>
+            </form>
+
+            <p class="login-cta">
+                Already have an account? <a href="/login">Sign in here</a>
+            </p>
+        </div>
+    </div>
 
 </body>
 </html>

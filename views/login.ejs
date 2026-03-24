@@ -3,25 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+     <title>Stayforward Rental Website</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 95 C 40 85, 30 70, 30 50 C 30 30, 40 15, 50 5 L 50 25 C 60 25, 75 40, 75 60 C 75 75, 65 85, 55 90%22 fill=%22%235c7c5a%22/></svg>">
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --forest: #1a241d;
+            --leaf: #5c7c5a;
+            --clay: #d4a373;
+            --cream: #fdfdfb;
+            --white: #ffffff;
+            --border: #edf0ee;
+            --text-main: #2d3e31;
+            --text-muted: #6b7280;
+            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--cream);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--white);
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(26, 36, 29, 0.08);
+            border: 1px solid var(--border);
+        }
+
+        /* Left Side: Cinematic Visual */
+        .visual-panel {
+            background-color: var(--forest);
+            background-image: linear-gradient(rgba(26, 36, 29, 0.4), rgba(26, 36, 29, 0.8)), 
+                              url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=800&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: var(--white);
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: 1.5px; font-size: 0.9rem; }
+
+        .visual-panel h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            line-height: 1.2;
+        }
+
+        /* Right Side: Simple Form */
+        .form-panel {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header { margin-bottom: 40px; }
+        .form-header h3 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+        .form-header p { color: var(--text-muted); font-size: 0.95rem; }
+
+        .input-group { margin-bottom: 24px; }
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            color: var(--leaf);
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            background: var(--cream);
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--text-main);
+            transition: var(--transition);
+        }
+
+        input:focus {
+            outline: none;
+            background: var(--white);
+            border-color: var(--leaf);
+            box-shadow: 0 0 0 4px rgba(92, 124, 90, 0.08);
+        }
+
+        .btn-login {
+            background: var(--forest);
+            color: white;
+            padding: 18px;
+            border-radius: 100px;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-login:hover {
+            background: var(--leaf);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(45, 62, 49, 0.15);
+        }
+
+        .signup-cta {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .signup-cta a {
+            color: var(--clay);
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .signup-cta a:hover { color: var(--leaf); }
+
+        /* Mobile Fix */
+        @media (max-width: 768px) {
+            .login-card { grid-template-columns: 1fr; max-width: 440px; }
+            .visual-panel { display: none; }
+            .form-panel { padding: 48px 32px; }
+        }
+    </style>
 </head>
 <body>
-    <div class="form-container">
-    <h2>Login</h2>
-    <form action="/login" method="POST">
-        <div class="field">
-            <label>Name or Phone Number</label>
-            <input type="text" name="Name" placeholder="Enter your Name" required>
+
+    <div class="login-card">
+        <div class="visual-panel">
+            <div class="logo-area">
+                <i class="fa-solid fa-leaf"></i> STAYFORWARD
+            </div>
+            
+            <div class="visual-content">
+                <h2>The journey <br>continues here.</h2>
+                <p style="margin-top: 20px; opacity: 0.7; font-size: 0.95rem; line-height: 1.6;">
+                    Reconnect with your curated list of sanctuaries and upcoming escapes.
+                </p>
+            </div>
+
+            <p style="font-size: 0.75rem; opacity: 0.5;">MEMBERS ONLY PORTAL</p>
         </div>
 
-        <div class="field">
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Enter your password" required>
-        </div>
+        <div class="form-panel">
+            <div class="form-header">
+                <h3>Welcome back</h3>
+                <p>Please enter your credentials.</p>
+            </div>
 
-        <button type="submit">Login</button>
-    </form>
-    <p>New here? <a href="/signup">Create an account</a></p>
-</div>
+            <form action="/login" method="POST">
+                <div class="input-group">
+                    <label>Identity</label>
+                    <input type="text" name="Name" placeholder="Name or Phone Number" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Security Key</label>
+                    <input type="password" name="password" placeholder="Enter password" required>
+                    <div style="text-align: right; margin-top: 8px;">
+                        <a href="#" style="font-size: 0.75rem; color: var(--text-muted); text-decoration: none;">Forgot password?</a>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    Enter Sanctuary <i class="fa-solid fa-arrow-right-long"></i>
+                </button>
+            </form>
+
+            <p class="signup-cta">
+                New to the collection? <a href="/signup">Create account</a>
+            </p>
+        </div>
+    </div>
+
 </body>
 </html>

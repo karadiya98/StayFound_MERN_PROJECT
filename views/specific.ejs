@@ -3,128 +3,529 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wanderlust | <%= typeof title !== 'undefined' ? title : 'Book Unique Stays' %></title>
+     <title>Stayforward Rental Website</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 95 C 40 85, 30 70, 30 50 C 30 30, 40 15, 50 5 L 50 25 C 60 25, 75 40, 75 60 C 75 75, 65 85, 55 90%22 fill=%22%235c7c5a%22/></svg>">
+    
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
     <style>
-        :root { --brand: #fe424d; --dark: #222; --light-gray: #717171; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; display: flex; flex-direction: column; min-height: 100vh; background-color: #fff; }
+        :root {
+            --sf-green: #5c7c5a;
+            --sf-light-green: #eef2ed;
+            --sf-pill: #f1f3f0;
+            --sf-text: #1a1c19;
+            --sf-muted: #6a6e69;
+            --sf-border: #eeeeee;
+            --radius-lg: 32px;
+            --radius-md: 24px;
+            --radius-sm: 16px;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 40px rgba(0,0,0,0.08);
+        }
+
+        /* Base Styling */
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #ffffff; 
+            color: var(--sf-text); 
+            padding-top: 100px;
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--sf-green); }
+
+        /* --- FIXED NAVIGATION --- */
+        .header-nav {
+            position: fixed; top: 0; left: 0; width: 100%;
+            height: 80px; background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(15px); z-index: 1000;
+            display: flex; align-items: center; padding: 0 5%;
+            border-bottom: 1px solid var(--sf-border);
+        }
+
+        .btn-back-pill {
+            text-decoration: none; color: var(--sf-text); background: white;
+            padding: 10px 22px; border-radius: 100px; font-weight: 700; 
+            box-shadow: var(--shadow-sm); border: 1px solid var(--sf-border);
+            display: flex; align-items: center; gap: 10px; transition: var(--transition);
+        }
+        .btn-back-pill:hover { background: var(--sf-green); color: white; transform: translateY(-2px); }
+
+        /* --- ADVANCED GALLERY SYSTEM --- */
+        .gallery-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 220px;
+            gap: 20px;
+            height: 550px;
+            margin-bottom: 60px;
+        }
+
+        .display-stage {
+            width: 100%; height: 100%; border-radius: var(--radius-lg);
+            overflow: hidden; background: #fafafa; position: relative;
+        }
+        .display-stage img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
         
-        /* Navbar */
-        .navbar { height: 5rem; background: white; border-bottom: 1px solid #ebebeb; }
-        .navbar-brand { color: var(--brand) !important; font-weight: 700; font-size: 1.5rem; }
-        .nav-link { color: var(--dark) !important; font-weight: 500; margin: 0 1rem; }
+        .image-overlay-btn {
+            position: absolute; bottom: 30px; left: 30px;
+            background: white; padding: 10px 20px; border-radius: 12px;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer;
+            box-shadow: var(--shadow-sm); z-index: 10; transition: 0.3s;
+        }
+        .image-overlay-btn:hover { background: var(--sf-pill); }
+
+        .thumbnail-reel {
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .reel-item {
+            flex: 1; border-radius: var(--radius-md); overflow: hidden;
+            cursor: pointer; border: 3px solid transparent; transition: var(--transition);
+            filter: grayscale(40%);
+        }
+        .reel-item img { width: 100%; height: 100%; object-fit: cover; }
+        .reel-item:hover { filter: grayscale(0%); transform: translateX(-5px); }
+        .reel-item.active { border-color: var(--sf-green); filter: grayscale(0%); }
+
+        /* --- CONTENT TYPOGRAPHY --- */
+        .listing-category { 
+            text-transform: uppercase; letter-spacing: 2px; 
+            font-size: 0.75rem; font-weight: 800; color: var(--sf-green); margin-bottom: 10px;
+        }
+        .sf-title { font-weight: 800; font-size: 3rem; letter-spacing: -1.5px; line-height: 1.1; }
+        .location-text { font-size: 1.1rem; color: var(--sf-muted); display: flex; align-items: center; gap: 8px; margin-top: 15px; }
+
+        /* --- AMENITIES GRID --- */
+        .amenity-section { margin-top: 50px; }
+        .amenity-card {
+            background: var(--sf-pill); padding: 20px; border-radius: var(--radius-sm);
+            display: flex; flex-direction: column; gap: 10px; transition: 0.3s; height: 100%;
+        }
+        .amenity-card:hover { background: var(--sf-light-green); transform: translateY(-5px); }
+        .amenity-card i { font-size: 1.5rem; color: var(--sf-green); }
+
+        /* --- BOOKING SIDEBAR --- */
+        .sticky-booking-card {
+            border: 1px solid var(--sf-border); border-radius: var(--radius-lg); 
+            padding: 35px; position: sticky; top: 110px;
+            background: #fff; box-shadow: var(--shadow-md);
+        }
         
-        /* Show Page Specifics */
-        .show-img { height: 30rem; width: 100%; object-fit: cover; border-radius: 1.5rem; }
-        .show-card { border: none !important; }
-        .btn-reserve { background: linear-gradient(to right, #E61E4D 0%, #E31C5F 50%, #D70466 100%); color: white; border: none; font-weight: 600; padding: 0.8rem 2rem; border-radius: 0.5rem; width: 100%; }
-        
-        /* Footer */
-        footer { background-color: #f7f7f7; border-top: 1px solid #dddddd; padding: 3rem 0; margin-top: auto; text-align: center; }
-        .footer-links a { text-decoration: none; color: var(--dark); margin: 0 0.5rem; font-size: 0.9rem; }
+        .price-label { font-size: 2rem; font-weight: 800; margin-bottom: 25px; }
+        .price-label span { font-size: 1rem; color: var(--sf-muted); font-weight: 500; }
+
+        .booking-input-group {
+            border: 1.5px solid var(--sf-border); border-radius: 16px; margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .booking-field { padding: 12px 15px; border-bottom: 1px solid var(--sf-border); }
+        .booking-field:last-child { border-bottom: none; }
+        .booking-field label { display: block; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; color: #999; }
+        .booking-field select, .booking-field input { border: none; width: 100%; outline: none; font-weight: 600; font-size: 0.9rem; }
+
+        .btn-reserve-action {
+            width: 100%; padding: 18px; border-radius: 16px; border: none;
+            background: var(--sf-green); color: white; font-weight: 700;
+            font-size: 1.1rem; transition: var(--transition);
+        }
+        .btn-reserve-action:hover { background: #4a6448; transform: scale(1.02); }
+
+        /* --- REVIEWS SECTION --- */
+        .review-stat-bar { height: 6px; background: #eee; border-radius: 10px; width: 100px; margin: 0 10px; overflow: hidden; }
+        .review-stat-fill { background: var(--sf-text); height: 100%; }
+        .guest-review-card { padding: 30px; border: 1px solid var(--sf-border); border-radius: var(--radius-sm); margin-bottom: 20px; }
+        .guest-avatar { width: 45px; height: 45px; border-radius: 50%; background: #ddd; }
+
+        /* --- FOOTER --- */
+        .sf-footer { background: var(--sf-pill); margin-top: 100px; padding: 80px 5% 40px; }
+        .footer-col h6 { font-weight: 800; margin-bottom: 20px; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+        .footer-link { display: block; text-decoration: none; color: var(--sf-muted); margin-bottom: 12px; font-size: 0.9rem; }
+        .footer-link:hover { color: var(--sf-green); }
+
+        /* Responsive Logic */
+        @media (max-width: 992px) {
+            .gallery-wrapper { grid-template-columns: 1fr; height: auto; }
+            .thumbnail-reel { flex-direction: row; height: 120px; }
+            .sticky-booking-card { position: relative; top: 0; margin-top: 40px; }
+            .sf-title { font-size: 2.2rem; }
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-md sticky-top px-md-5">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i> wanderlust</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/listings">Explore</a>
-                <a class="nav-link fw-bold text-danger" href="/listings/new">Airbnb your home</a>
+
+    <header class="header-nav">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <a href="/listings" class="btn-back-pill">
+                <i class="fa-solid fa-arrow-left"></i> <span>Back to Explore</span>
+            </a>
+            <div class="d-flex gap-4 align-items-center">
+                <button class="btn btn-link text-dark text-decoration-none fw-bold small"><i class="fa-solid fa-arrow-up-from-bracket me-2"></i>Share</button>
+                <button class="btn btn-link text-dark text-decoration-none fw-bold small"><i class="fa-regular fa-heart me-2"></i>Save</button>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <div class="container my-5">
+    <main class="container px-lg-5">
         
-    
-
-<div class="row justify-content-center">
-    <div class="col-lg-8 col-md-10 col-12 mb-3">
-        <h2 class="fw-bold"><%= specificlistings.title %></h2>
-    </div>
-
-    <div class="col-lg-8 col-md-10 col-12">
-        <div class="card show-card">
-            <img src="<%= specificlistings.image.url %>" class="card-img show-img shadow-sm" alt="listing_image">
-            <div class="card-body px-0">
-                <p class="text-muted mb-4">
-                    <i class="fa-solid fa-location-dot me-1"></i> <%= specificlistings.location %>, <%= specificlistings.country %>
-                </p>
-
-                <div class="row">
-                    <div class="col-md-7">
-                        <h4 class="fw-bold border-bottom pb-3">About this place</h4>
-                        <p class="fs-5 mt-3 text-secondary">
-                            <%= specificlistings.description %>
-                        </p>
-                        
-                        <div class="amenities mt-5">
-                            <h5 class="fw-bold mb-4">What this place offers</h5>
-                            <div class="row g-3">
-                                <div class="col-6"><i class="fa-solid fa-wifi me-2"></i> Fast Wifi</div>
-                                <div class="col-6"><i class="fa-solid fa-kitchen-set me-2"></i> Kitchen</div>
-                                <div class="col-6"><i class="fa-solid fa-car me-2"></i> Free Parking</div>
-                                <div class="col-6"><i class="fa-solid fa-snowflake me-2"></i> Air Conditioning</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-5">
-                        <div class="card shadow p-4 rounded-4 border sticky-top" style="top: 100px;">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h3 class="fw-bold mb-0">₹<%= specificlistings.price.toLocaleString("en-IN") %> <span class="fs-6 fw-normal text-muted">/ night</span></h3>
-                            </div>
-                            
-                            <div class="border rounded-3 mb-3 p-2">
-                                <div class="row">
-                                    <div class="col-6 border-end">
-                                        <label class="x-small fw-bold">CHECK-IN</label>
-                                        <p class="mb-0 small text-muted">Add date</p>
-                                    </div>
-                                    <div class="col-6">
-                                        <label class="x-small fw-bold">CHECKOUT</label>
-                                        <p class="mb-0 small text-muted">Add date</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button class="btn btn-reserve">Reserve</button>
-                            <p class="text-center mt-2 text-muted small">You won't be charged yet</p>
-                            
-                            <hr>
-                            <div class="d-flex justify-content-between fw-bold fs-5">
-                                <span>Total</span>
-                                <span>₹<%= specificlistings.price.toLocaleString("en-IN") %></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-5 d-flex gap-3">
-                    <a href="/listings/<%= specificlistings._id %>/edit" class="btn btn-dark px-4 py-2">Edit Listing</a>
-                    <form method="POST" action="/listings/<%= specificlistings._id %>?_method=DELETE">
-                        <button class="btn btn-outline-danger px-4 py-2">Delete This Listing</button>
-                    </form>
+        <section class="gallery-wrapper" data-aos="fade-up">
+            <div class="display-stage">
+                <img id="mainDisplay" src="<%= specificlistings.image.url %>" alt="Primary Property View">
+                <div class="image-overlay-btn" onclick="openFullscreen()">
+                    <i class="fa-solid fa-grip-vertical me-2"></i> View all 15 photos
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-    
-    </div>
 
-    <footer>
-        <div class="footer-socials mb-3">
-            <i class="fa-brands fa-square-facebook fs-3 mx-2"></i>
-            <i class="fa-brands fa-square-instagram fs-3 mx-2"></i>
-            <i class="fa-brands fa-linkedin fs-3 mx-2"></i>
+            <div class="thumbnail-reel">
+                <div class="reel-item active" onclick="updateGallery('<%= specificlistings.image.url %>', this)">
+                    <img src="<%= specificlistings.image.url %>" alt="Thumbnail 1">
+                </div>
+                <div class="reel-item" onclick="updateGallery('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800', this)">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400" alt="Thumbnail 2">
+                </div>
+                <div class="reel-item" onclick="updateGallery('https://images.unsplash.com/photo-1600607687940-4e7a6a353d29?w=800', this)">
+                    <img src="https://images.unsplash.com/photo-1600607687940-4e7a6a353d29?w=400" alt="Thumbnail 3">
+                </div>
+            </div>
+        </section>
+
+        <div class="row g-5">
+            <div class="col-lg-7">
+                <div data-aos="fade-up">
+                    <div class="listing-category">Verified Sanctuary</div>
+                    <h1 class="sf-title"><%= specificlistings.title %></h1>
+                    <div class="location-text">
+                        <i class="fa-solid fa-location-dot text-success"></i>
+                        <%= specificlistings.location %>, <%= specificlistings.country %>
+                        <span class="mx-2">•</span>
+                        <span class="text-dark fw-bold"><i class="fa-solid fa-star text-warning me-1"></i> 4.92 (124 reviews)</span>
+                    </div>
+                </div>
+
+                <hr class="my-5">
+
+                <div class="d-flex align-items-center justify-content-between mb-5" data-aos="fade-up">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="guest-avatar d-flex align-items-center justify-content-center text-white fw-bold bg-dark">
+                            <%= specificlistings.title.charAt(0) %>
+                        </div>
+                        <div>
+                            <h5 class="mb-0 fw-bold">Hosted by Stayforward Elite</h5>
+                            <p class="text-muted small mb-0">Superhost • 4 years hosting</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-dark btn-sm rounded-pill px-3">Contact Host</button>
+                </div>
+
+                <section class="description-area" data-aos="fade-up">
+                    <h4 class="fw-800 mb-4">About the Property</h4>
+                    <p class="text-secondary fs-5 leading-relaxed mb-4">
+                        <%= specificlistings.description %>
+                    </p>
+                    <p class="text-secondary fs-5 leading-relaxed">
+                        This meticulously designed sanctuary offers an unparalleled blend of modern luxury and natural tranquility. 
+                        Every corner has been curated to provide a seamless living experience, from the high-end sustainable 
+                        materials to the smart integrated home systems.
+                    </p>
+                </section>
+
+                <section class="amenity-section" data-aos="fade-up">
+                    <h4 class="fw-800 mb-4">What this place offers</h4>
+                    <div class="row g-3">
+                        <div class="col-md-4 col-6">
+                            <div class="amenity-card">
+                                <i class="fa-solid fa-wifi"></i>
+                                <span class="fw-bold small">Fiber Optic Wifi</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="amenity-card">
+                                <i class="fa-solid fa-car"></i>
+                                <span class="fw-bold small">Free Parking</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="amenity-card">
+                                <i class="fa-solid fa-kitchen-set"></i>
+                                <span class="fw-bold small">Gourmet Kitchen</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="amenity-card">
+                                <i class="fa-solid fa-snowflake"></i>
+                                <span class="fw-bold small">Climate Control</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="amenity-card">
+                                <i class="fa-solid fa-tv"></i>
+                                <span class="fw-bold small">4K Home Theater</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="amenity-card">
+                                <i class="fa-solid fa-vault"></i>
+                                <span class="fw-bold small">Laptop Safe</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-dark mt-4 rounded-pill px-4 fw-bold">Show all 45 amenities</button>
+                </section>
+
+                <hr class="my-5">
+
+                <section class="location-context" data-aos="fade-up">
+                    <h4 class="fw-800 mb-2">Where you'll be</h4>
+                    <p class="text-muted mb-4"><%= specificlistings.location %>, <%= specificlistings.country %></p>
+                    <div style="width:100%; height:350px; background:#f0f0f0; border-radius:var(--radius-md); display:grid; place-items:center; border: 1px solid #ddd;">
+                        <div class="text-center">
+                            <i class="fa-solid fa-map-location-dot fs-1 text-muted mb-2"></i>
+                            <p class="fw-bold text-muted">Map API Loading...</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-lg-5">
+                <aside class="sticky-booking-card" data-aos="zoom-in">
+                    <div class="price-label">
+                        ₹<%= specificlistings.price.toLocaleString("en-IN") %> <span>/ night</span>
+                    </div>
+
+                    <div class="booking-input-group">
+                        <div class="row g-0">
+                            <div class="col-6 booking-field">
+                                <label>Check-in</label>
+                                <input type="date" value="2026-04-12">
+                            </div>
+                            <div class="col-6 booking-field border-start">
+                                <label>Check-out</label>
+                                <input type="date" value="2026-04-15">
+                            </div>
+                        </div>
+                        <div class="booking-field">
+                            <label>Guests</label>
+                            <select>
+                                <option>1 Guest</option>
+                                <option selected>2 Guests</option>
+                                <option>3 Guests</option>
+                                <option>4 Guests</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="btn-reserve-action mb-3">Reserve Sanctuary</button>
+                    <p class="text-center text-muted small mb-4">You won't be charged yet</p>
+
+                    <div class="price-breakdown small">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">₹<%= specificlistings.price.toLocaleString("en-IN") %> x 3 nights</span>
+                            <span>₹<%= (specificlistings.price * 3).toLocaleString("en-IN") %></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Stayforward service fee</span>
+                            <span>₹0</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Sustainable taxes</span>
+                            <span>₹142</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between fs-5 fw-800 pt-2">
+                            <span>Total</span>
+                            <span>₹<%= (specificlistings.price * 3 + 142).toLocaleString("en-IN") %></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 p-3 rounded-3 bg-light d-flex align-items-center gap-3">
+                        <i class="fa-solid fa-gem text-success"></i>
+                        <span class="x-small fw-bold">This is a rare find. This host's places are usually booked.</span>
+                    </div>
+                </aside>
+            </div>
         </div>
-        <div class="footer-links">
-            <p>&copy; 2026 Wanderlust Private Limited · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+
+        <section class="reviews-section mt-5 pt-5 border-top" data-aos="fade-up">
+            <h4 class="fw-800 mb-5"><i class="fa-solid fa-star me-2"></i> 4.92 • 124 reviews</h4>
+            
+            <div class="row mb-5">
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center justify-content-between pe-md-5">
+                        <span class="small">Cleanliness</span>
+                        <div class="d-flex align-items-center">
+                            <div class="review-stat-bar"><div class="review-stat-fill" style="width: 95%"></div></div>
+                            <span class="small fw-bold">4.9</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center justify-content-between pe-md-5">
+                        <span class="small">Communication</span>
+                        <div class="d-flex align-items-center">
+                            <div class="review-stat-bar"><div class="review-stat-fill" style="width: 100%"></div></div>
+                            <span class="small fw-bold">5.0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center justify-content-between pe-md-5">
+                        <span class="small">Check-in</span>
+                        <div class="d-flex align-items-center">
+                            <div class="review-stat-bar"><div class="review-stat-fill" style="width: 90%"></div></div>
+                            <span class="small fw-bold">4.8</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center justify-content-between pe-md-5">
+                        <span class="small">Value</span>
+                        <div class="d-flex align-items-center">
+                            <div class="review-stat-bar"><div class="review-stat-fill" style="width: 85%"></div></div>
+                            <span class="small fw-bold">4.6</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="guest-review-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="guest-avatar"></div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Ananya Sharma</h6>
+                                <p class="text-muted x-small mb-0">March 2026</p>
+                            </div>
+                        </div>
+                        <p class="small text-secondary mb-0">The attention to detail in this property is unmatched. The views from the primary suite were breathtaking and the smart home features made everything so easy!</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="guest-review-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="guest-avatar" style="background: #e1e1e1"></div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Julian Weber</h6>
+                                <p class="text-muted x-small mb-0">February 2026</p>
+                            </div>
+                        </div>
+                        <p class="small text-secondary mb-0">Stayforward really delivers on the "Sanctuary" promise. Peaceful, clean, and perfectly located for a weekend getaway. 10/10 recommendation.</p>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-outline-dark rounded-pill px-4 fw-bold mt-3">Show all 124 reviews</button>
+        </section>
+
+        <section class="faq-area mt-5 pt-5 border-top" data-aos="fade-up">
+            <h4 class="fw-800 mb-4">Frequently Asked Questions</h4>
+            <div class="accordion accordion-flush" id="stayFAQ">
+                <div class="accordion-item border-bottom">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-bold py-4 shadow-none bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#q1">
+                      What is the cancellation policy?
+                    </button>
+                  </h2>
+                  <div id="q1" class="accordion-collapse collapse" data-bs-parent="#stayFAQ">
+                    <div class="accordion-body text-muted small">
+                      We offer a 100% refund for cancellations made within 48 hours of booking, as long as the check-in date is at least 14 days away. For cancellations after that, we offer a 50% refund up to 7 days before check-in.
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item border-bottom">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-bold py-4 shadow-none bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#q2">
+                      Are pets allowed in the sanctuary?
+                    </button>
+                  </h2>
+                  <div id="q2" class="accordion-collapse collapse" data-bs-parent="#stayFAQ">
+                    <div class="accordion-body text-muted small">
+                      While we love animals, this specific property is a pet-free zone to ensure the highest standards of hypoallergenic comfort for all our guests.
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="sf-footer">
+        <div class="container-fluid px-lg-5">
+            <div class="row g-4 mb-5">
+                <div class="col-lg-3 col-md-6 footer-col">
+                    <h6>Support</h6>
+                    <a href="#" class="footer-link">Help Center</a>
+                    <a href="#" class="footer-link">Stayforward Cover</a>
+                    <a href="#" class="footer-link">Anti-discrimination</a>
+                    <a href="#" class="footer-link">Disability support</a>
+                </div>
+                <div class="col-lg-3 col-md-6 footer-col">
+                    <h6>Hosting</h6>
+                    <a href="#" class="footer-link">Add your sanctuary</a>
+                    <a href="#" class="footer-link">Hosting resources</a>
+                    <a href="#" class="footer-link">Community forum</a>
+                    <a href="#" class="footer-link">Hosting responsibly</a>
+                </div>
+                <div class="col-lg-3 col-md-6 footer-col">
+                    <h6>Stayforward</h6>
+                    <a href="#" class="footer-link">Newsroom</a>
+                    <a href="#" class="footer-link">New features</a>
+                    <a href="#" class="footer-link">Careers</a>
+                    <a href="#" class="footer-link">Investors</a>
+                </div>
+                <div class="col-lg-3 col-md-6 footer-col">
+                    <h6>Social</h6>
+                    <div class="d-flex gap-3 fs-5">
+                        <i class="fa-brands fa-instagram"></i>
+                        <i class="fa-brands fa-x-twitter"></i>
+                        <i class="fa-brands fa-facebook"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="border-top pt-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <div class="small text-muted">&copy; 2026 Stayforward Private Limited • Privacy • Terms • Sitemap</div>
+                <div class="small fw-bold d-flex gap-3">
+                    <span><i class="fa-solid fa-globe me-2"></i> English (IN)</span>
+                    <span>₹ INR</span>
+                </div>
+            </div>
         </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        // Initialize Scroll Animations
+        AOS.init({ duration: 800, once: true });
+
+        // Gallery Image Switcher
+        function updateGallery(url, element) {
+            const stage = document.getElementById('mainDisplay');
+            
+            // Fade Transition
+            stage.style.opacity = '0';
+            
+            setTimeout(() => {
+                stage.src = url;
+                stage.style.opacity = '1';
+                
+                // Active State Styling
+                document.querySelectorAll('.reel-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                element.classList.add('active');
+            }, 300);
+        }
+
+        function openFullscreen() {
+            alert("This would normally open a high-res lightbox gallery!");
+        }
+    </script>
 </body>
 </html>

@@ -3,84 +3,530 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wanderlust | All Listings</title>
+     <title>Stayforward Rental Website</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 95 C 40 85, 30 70, 30 50 C 30 30, 40 15, 50 5 L 50 25 C 60 25, 75 40, 75 60 C 75 75, 65 85, 55 90%22 fill=%22%235c7c5a%22/></svg>">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,500&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; padding: 20px; }
-        h1 { text-align: center; color: #333; margin-bottom: 30px; }
-
-        /* Container for the cards */
-        .listings-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            justify-content: center;
+        
+         :root {
+            /* --- COLOR PALETTE (Nature-Futurism) --- */
+            --bg-body: #fdfdfb;
+            --bg-card: #ffffff;
+            --dark: #1a1c19; 
+            --accent-forest: #2d3e31; 
+            --accent-leaf: #5c7c5a;
+            --accent-clay: #d4a373;
+            --subtle-stone: #f1f3f0;
+            --white: #ffffff;
+            --border-light: rgba(0, 0, 0, 0.05);
+            --glass: rgba(255, 255, 255, 0.8);
+            
+            /* --- EFFECTS --- */
+            --shadow-soft: 0 10px 40px rgba(45, 62, 49, 0.05);
+            --shadow-hover: 0 20px 50px rgba(45, 62, 49, 0.12);
+            --transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            --radius-lg: 32px;
+            --radius-md: 20px;
         }
 
-        /* The Clickable Box */
-        .listing-card-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            width: 300px;
+        /* --- BASE RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-body); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-leaf); border-radius: 10px; }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            height: 100%;
+        #progress {
+            position: fixed; top: 0; left: 0; height: 4px;
+            background: linear-gradient(to right, var(--accent-forest), var(--accent-clay));
+            z-index: 9999; width: 0%; transition: width 0.2s;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
+         /* --- NAVIGATION --- */
+nav {
+    position: fixed; top: 0; left: 0; width: 100%; height: 95px;
+    z-index: 5000; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%; transition: var(--transition);
+}
 
-        .card-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
+nav.scrolled { 
+    height: 75px; background: var(--glass);
+    backdrop-filter: blur(25px); border-bottom: 1px solid var(--border-light);
+    box-shadow: var(--shadow-soft);
+}
 
-        .card-body { padding: 15px; }
-        .card-title { font-weight: bold; font-size: 1.2rem; margin: 0; color: #fe424d; /* Airbnb-like red */ }
-        .card-location { color: #777; font-size: 0.9rem; margin-top: 5px; }
-        .card-price { font-size: 1.1rem; margin-top: 10px; font-weight: 600; }
-        .card-price span { font-weight: 400; color: #555; }
+.logo { 
+    font-size: 1.5rem; font-weight: 800; color: var(--dark);
+    text-decoration: none; letter-spacing: -1.5px;
+    display: flex; align-items: center; gap: 8px;
+    transition: var(--transition);
+}
+.logo:hover { transform: scale(1.02); }
+.logo i { color: var(--accent-leaf); font-size: 1.2rem; transition: 0.5s; }
+.logo:hover i { transform: rotate(15deg); color: var(--accent-clay); }
+.logo span { color: var(--accent-leaf); }
+
+/* --- NAV LINKS & ACTIVE STATES --- */
+.nav-links { display: flex; gap: 10px; background: rgba(0,0,0,0.03); padding: 5px; border-radius: 100px; }
+
+.nav-links a {
+    font-size: 0.85rem; font-weight: 700; color: var(--dark); 
+    text-decoration: none; position: relative; opacity: 0.6; 
+    padding: 10px 22px; border-radius: 100px; transition: all 0.4s ease;
+}
+
+/* Hover Effect */
+.nav-links a:hover { 
+    opacity: 1; 
+    background: rgba(255,255,255,0.6); 
+    color: var(--accent-forest);
+    transform: translateY(-1px);
+}
+
+/* Active Class (Add this class to the current page link) */
+.nav-links a.active {
+    opacity: 1;
+    background: var(--white);
+    color: var(--accent-forest);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Indicator dot for Active */
+.nav-links a.active::after {
+    content: ''; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+    width: 4px; height: 4px; background: var(--accent-clay); border-radius: 50%;
+}
+
+/* --- USER UI --- */
+.nav-right { display: flex; align-items: center; gap: 20px; position: relative; }
+
+.user-trigger {
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer; padding: 6px 6px 6px 18px;
+    background: var(--white); border-radius: 100px;
+    border: 1px solid var(--border-light); transition: var(--transition);
+}
+
+.user-trigger:hover { 
+    box-shadow: var(--shadow-hover); 
+    border-color: var(--accent-leaf);
+    transform: translateY(-2px); 
+}
+
+/* Rotation effect on the burger icon when menu is active */
+.user-trigger.active i { transform: rotate(90deg); color: var(--accent-leaf); }
+
+.avatar {
+    width: 38px; height: 38px; background: var(--accent-forest);
+    color: var(--white); border-radius: 50%; display: grid;
+    place-items: center; font-size: 0.8rem; font-weight: 700;
+    transition: 0.3s;
+}
+.user-trigger:hover .avatar { background: var(--accent-leaf); transform: scale(1.05); }
+
+/* --- DROPDOWN MENU --- */
+.dropdown-menu {
+    position: absolute; top: 120%; right: 0; width: 260px;
+    background: var(--white); border-radius: 24px; padding: 12px;
+    box-shadow: var(--shadow-hover); border: 1px solid var(--border-light);
+    display: none; flex-direction: column; gap: 4px;
+    transform: translateY(10px); opacity: 0; transition: var(--transition);
+}
+
+.dropdown-menu.show { display: flex; transform: translateY(0); opacity: 1; }
+
+.dropdown-menu a {
+    padding: 12px 18px; text-decoration: none; color: var(--dark);
+    font-size: 0.9rem; font-weight: 600; border-radius: 14px;
+    display: flex; align-items: center; gap: 12px; transition: 0.2s;
+}
+
+.dropdown-menu a i { width: 20px; opacity: 0.5; font-size: 1rem; }
+.dropdown-menu a:hover { background: var(--subtle-stone); color: var(--accent-leaf); }
+.dropdown-menu a:hover i { opacity: 1; }
+
+.dropdown-divider { height: 1px; background: var(--border-light); margin: 8px 0; }
+
+
+        /* --- CATEGORIES SUB-NAV --- */
+        .category-bar {
+            background: var(--white); display: flex; align-items: center;
+            padding: 15px 6%; gap: 40px; position: sticky; top: 80px;
+            z-index: 900; border-bottom: 1px solid var(--border-light);
+            overflow-x: auto; scrollbar-width: none;
+        }
+        .category-bar::-webkit-scrollbar { display: none; }
+
+        .cat-link {
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            opacity: 0.5; cursor: pointer; text-decoration: none; color: inherit;
+            min-width: 60px; transition: 0.3s; padding-bottom: 10px;
+            border-bottom: 2px solid transparent;
+        }
+        .cat-link:hover, .cat-link.active { opacity: 1; border-bottom-color: var(--accent-leaf); }
+        .cat-link i { font-size: 1.3rem; }
+        .cat-link span { font-size: 0.7rem; font-weight: 700; white-space: nowrap; }
+
+        /* --- TAX TOGGLE --- */
+        .tax-toggle-box {
+            margin: 25px 6% 0; padding: 15px 20px;
+            border: 1px solid var(--border-light); border-radius: 12px;
+            display: inline-flex; align-items: center; gap: 15px;
+            background: var(--white); cursor: pointer;
+        }
+        .tax-toggle-box span { font-size: 0.85rem; font-weight: 600; }
+        .toggle-switch {
+            width: 45px; height: 24px; background: #ccc;
+            border-radius: 20px; position: relative; transition: 0.3s;
+        }
+        .toggle-switch::before {
+            content: ''; position: absolute; width: 18px; height: 18px;
+            background: white; border-radius: 50%; top: 3px; left: 3px; transition: 0.3s;
+        }
+        .tax-active .toggle-switch { background: var(--accent-leaf); }
+        .tax-active .toggle-switch::before { left: 24px; }
+
+        .tax-info { display: none; color: #777; font-weight: 400; font-size: 0.8rem; }
+
+        /* --- MODERN LISTINGS GRID --- */
+.listings-container {
+    display: grid;
+    padding: 40px 6% 120px;
+    /* Responsive grid that prevents cards from becoming too skinny */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 40px 24px;
+    /* Subtle entrance animation for the whole page */
+    animation: revealGrid 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes revealGrid {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.listing-card-link { 
+    text-decoration: none; 
+    color: inherit; 
+    display: block;
+    position: relative;
+   
+}
+
+/* --- THE CARD --- */
+.card {
+    background: transparent;
+    border-radius: 24px;
+    transition: var(--transition);
+}
+
+/* --- THE IMAGE CONTAINER (Biophilic Style) --- */
+.img-container {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 28px; /* Extra rounded for a softer, organic feel */
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 16px;
+    background: #f0f2ef; /* Placeholder color */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+/* Pulsing background effect while loading */
+.img-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    100% { transform: translateX(100%); }
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 'Cubic-bezier' makes the zoom feel heavy and premium */
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Interaction: Zoom and subtle rotate */
+.listing-card-link:hover .img-container img {
+    transform: scale(1.1) rotate(-1deg);
+}
+
+/* --- FLOATING GLASS WISHLIST --- */
+.wishlist-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    width: 42px;
+    height: 42px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.wishlist-icon:hover {
+    background: #ffffff;
+    color: #ff385c;
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* --- CONTENT BOX --- */
+.card-body { 
+    padding: 0 6px; 
+}
+
+.card-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start;
+}
+
+.card-title { 
+    font-weight: 800; 
+    font-size: 1.1rem; 
+    color: #1a1c19;
+    letter-spacing: -0.3px;
+    /* Clean truncation for long titles */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-rating { 
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem; 
+    font-weight: 700;
+    background: #fdfaf3;
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+
+.card-rating i { color: #d4a373; }
+
+.card-location { 
+    color: #6a6e69; 
+    font-size: 0.95rem; 
+    margin: 4px 0 12px;
+    font-weight: 500;
+}
+
+/* --- PRICE TAGS --- */
+.card-price { 
+    font-size: 1.15rem; 
+    font-weight: 800; 
+    color: #2d3e31; /* Deep forest green */
+}
+
+.card-price span { 
+    font-weight: 400; 
+    color: #949993; 
+    font-size: 0.9rem;
+}
+
+/* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 768px) {
+    .listings-container {
+        padding: 20px 5% 100px;
+        grid-template-columns: 1fr; /* Stacked cards on mobile are easier to browse */
+        gap: 32px;
+    }
+    
+    .img-container {
+        border-radius: 20px;
+        aspect-ratio: 4 / 3; /* Wider images look better on phones */
+    }
+}
+        
     </style>
 </head>
 <body>
 
-    <h1>Explore Amazing Places</h1>
+     <div id="progress"></div>
 
-                <div style="text-align: center; margin-bottom: 20px;">
-    <% if (currUser) { %> 
-        <form action="/listings/add" method="GET">
-            <button type="submit" style="padding: 10px 20px; cursor: pointer;">Add New Listing</button>
-        </form>
-    <% } %>
-</div>
-            
+   <nav id="mainNav">
+    <a href="/" class="logo">
+        <i class="fa-solid fa-leaf"></i> stay<span>forward.</span>
+    </a>
     
+    <div class="nav-links">
+        <a href="/" >Dashboard</a>
+        <a href="/listings" class="active">View Places</a>
+        <% if(currUser) { %>
+            <a href="/listings/add">Add your places</a>
+        <% } %>
+    </div>
+
+    <div class="nav-right">
+        <div class="user-trigger" id="userTrigger" onclick="toggleDropdown()">
+            <i class="fa-solid fa-bars-staggered"></i>
+            <div class="avatar">
+                    <% if (currUser && currUser.username) { %>
+                        <%= currUser.username.charAt(0).toUpperCase() %>
+                    <% } else if (currUser && currUser.name) { %>
+                        <%= currUser.name.charAt(0).toUpperCase() %>
+                    <% } else { %>
+                        <i class="fa-solid fa-circle-user"></i>
+                    <% } %>
+                </div>
+        </div>
+
+        <div class="dropdown-menu" id="userDropdown">
+            <% if(!currUser) { %>
+                <a href="/login"><b>Log In</b></a>
+                <a href="/signup">Sign Up</a>
+            <% } else { %>
+                <a href="/profile"><i class="fa-regular fa-circle-user"></i> My Profile</a>
+                <a href="/bookings"><i class="fa-solid fa-suitcase-rolling"></i> Trips</a>
+                <a href="/wishlist"><i class="fa-regular fa-heart"></i> Wishlist</a>
+                <div class="dropdown-divider"></div>
+                <a href="/hosting"><i class="fa-solid fa-house-chimney-window"></i> Manage Listings</a>
+                <a href="/logout" style="color: #e63946;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</a>
+            <% } %>
+        </div>
+    </div>
+</nav>
+
+
+    <div class="category-bar">
+        <a href="#" class="cat-link active"><i class="fa-solid fa-mountain"></i><span>Highlands</span></a>
+        <a href="#" class="cat-link"><i class="fa-solid fa-tree"></i><span>Forest</span></a>
+        <a href="#" class="cat-link"><i class="fa-solid fa-water"></i><span>Lakefront</span></a>
+        <a href="#" class="cat-link"><i class="fa-solid fa-fire-burner"></i><span>Off-grid</span></a>
+        <a href="#" class="cat-link"><i class="fa-solid fa-wind"></i><span>Coastal</span></a>
+        <a href="#" class="cat-link"><i class="fa-solid fa-snowflake"></i><span>Arctic</span></a>
+        <a href="#" class="cat-link"><i class="fa-solid fa-city"></i><span>Urban</span></a>
+        <a href="#" class="cat-link"><i class="fa-solid fa-tents"></i><span>Glamping</span></a>
+    </div>
+
+    <div class="tax-toggle-box" id="taxToggle">
+        <span>Display total price (incl. GST)</span>
+        <div class="toggle-switch"></div>
+    </div>
 
     <div class="listings-container">
         <% for(let listing of allListings) { %>
             <a href="/listings/<%= listing._id %>" class="listing-card-link">
                 <div class="card">
-                    <img src="<%= listing.image.url %>" class="card-img" alt="listing_image">
+                    <div class="img-container">
+                        <img src="<%= listing.image.url %>" alt="listing_image">
+                        <i class="fa-solid fa-heart wishlist-icon"></i>
+                    </div>
                     <div class="card-body">
-                        <p class="card-title"><%= listing.title %></p>
+                        <div class="card-header">
+                            <p class="card-title"><%= listing.title %></p>
+                            <span class="card-rating"><i class="fa-solid fa-star"></i> 4.9</span>
+                        </div>
                         <p class="card-location"><%= listing.location %>, <%= listing.country %></p>
                         <p class="card-price">
-                            ₹<%= listing.price.toLocaleString("en-IN") %> <span>/ night</span>
+                            ₹<%= listing.price.toLocaleString("en-IN") %> 
+                            <span class="tax-info"> + ₹<%= (listing.price * 0.18).toLocaleString("en-IN") %> tax</span>
+                            <span>/ night</span>
                         </p>
                     </div>
                 </div>
             </a>
         <% } %>
     </div>
+
+    <script>
+        const taxToggle = document.getElementById('taxToggle');
+        const taxInfo = document.querySelectorAll('.tax-info');
+
+        taxToggle.addEventListener('click', () => {
+            taxToggle.classList.toggle('tax-active');
+            taxInfo.forEach(info => {
+                info.style.display = taxToggle.classList.contains('tax-active') ? 'inline' : 'none';
+            });
+        });
+
+        /**
+ * Toggle the User Dropdown Menu
+ */
+function toggleDropdown() {
+    const dropdown = document.getElementById('userDropdown');
+    const trigger = document.getElementById('userTrigger');
+    
+    // Toggle classes for animation and visibility
+    if (dropdown) {
+        dropdown.classList.toggle('show');
+    }
+    
+    // Rotate the burger icon for visual feedback
+    if (trigger) {
+        trigger.classList.toggle('active');
+    }
+}
+
+/**
+ * Global Event Listeners
+ */
+window.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('userDropdown');
+    const trigger = document.getElementById('userTrigger');
+    
+    // 1. Close dropdown if clicking outside the user menu area
+    if (dropdown && trigger) {
+        if (!trigger.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('show');
+            trigger.classList.remove('active');
+        }
+    }
+});
+
+/**
+ * Handle Scroll Effects for Navigation
+ */
+window.addEventListener('scroll', () => {
+    const nav = document.getElementById('mainNav');
+    const progress = document.getElementById('progress');
+    
+    // Calculate scroll percentage for the top progress bar
+    let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    let scrolled = (winScroll / height) * 100;
+    
+    if (progress) {
+        progress.style.width = scrolled + "%";
+    }
+
+    // Add 'scrolled' class to nav for glassmorphism effect
+    if (nav) {
+        if (window.scrollY > 50) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    }
+});
+    </script>
 
 </body>
 </html>

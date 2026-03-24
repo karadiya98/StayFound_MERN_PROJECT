@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velo Admin | Stayforward Management</title>
+     <title>Stayforward admin panel</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 95 C 40 85, 30 70, 30 50 C 30 30, 40 15, 50 5 L 50 25 C 60 25, 75 40, 75 60 C 75 75, 65 85, 55 90%22 fill=%22%235c7c5a%22/></svg>">
+    
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -29,6 +31,7 @@
             background-color: var(--bg); 
             color: var(--text-main);
             display: flex;
+            min-height: 100vh;
         }
 
         /* --- MODERN SIDEBAR --- */
@@ -41,45 +44,34 @@
             display: flex;
             flex-direction: column;
             color: #fff;
+            z-index: 100;
         }
 
         .brand {
             display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            margin-bottom: 32px;
+            align-items: center; gap: 12px;
+            padding: 12px; margin-bottom: 32px;
         }
 
         .brand-logo {
             background: var(--primary);
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            color: var(--accent);
+            width: 35px; height: 35px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 8px; color: var(--accent);
         }
 
         .brand span { font-weight: 800; font-size: 1.1rem; letter-spacing: -0.5px; }
 
         .nav-section { margin-bottom: 24px; }
         .nav-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #475569;
-            margin-bottom: 12px;
-            padding-left: 12px;
-            font-weight: 700;
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;
+            color: #475569; margin-bottom: 12px; padding-left: 12px; font-weight: 700;
         }
 
         .nav-link {
             display: flex; align-items: center; gap: 12px; padding: 12px 16px;
             color: #94a3b8; text-decoration: none; border-radius: 10px;
-            transition: all 0.2s; font-size: 0.9rem; font-weight: 500;
-            margin-bottom: 4px;
+            transition: all 0.2s; font-size: 0.9rem; font-weight: 500; margin-bottom: 4px;
         }
 
         .nav-link:hover { background: rgba(255,255,255,0.05); color: #fff; }
@@ -97,15 +89,9 @@
             margin-bottom: 32px;
         }
 
-        /* --- SEARCH & FILTERS --- */
-        .controls-row {
-            display: flex; gap: 16px; margin-bottom: 24px;
-        }
+        .controls-row { display: flex; gap: 16px; margin-bottom: 24px; }
 
-        .search-wrapper {
-            position: relative; flex: 1;
-        }
-
+        .search-wrapper { position: relative; flex: 1; }
         .search-wrapper i {
             position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
             color: var(--text-muted);
@@ -117,23 +103,26 @@
             outline: none; font-family: inherit; font-size: 0.9rem;
         }
 
-        /* --- TABLE UPGRADE --- */
+        /* --- CARDS & TABLES --- */
         .card {
             background: var(--white); border-radius: 16px;
             border: 1px solid var(--border); overflow: hidden;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
         }
 
-        .status-badge {
-            padding: 4px 10px; border-radius: 20px; font-size: 0.75rem;
-            font-weight: 700; background: var(--success-bg); color: var(--success-text);
-        }
+        .stats-card { flex: 1; padding: 20px; display: flex; align-items: center; gap: 15px; }
 
-        .btn-primary {
-            background: var(--primary); color: white; padding: 12px 20px;
-            border-radius: 10px; font-weight: 600; font-size: 0.85rem;
-            border: none; cursor: pointer; display: flex; align-items: center; gap: 8px;
-            transition: opacity 0.2s;
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { 
+            padding: 16px 24px; background: #f9fafb; border-bottom: 1px solid var(--border);
+            font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;
+        }
+        td { padding: 16px 24px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+
+        .user-avatar {
+            width: 40px; height: 40px; border-radius: 10px; 
+            background: #e2e8f0; display: flex; align-items: center; 
+            justify-content: center; font-weight: 700; color: var(--primary);
         }
 
         .prop-info-title { font-weight: 700; color: var(--dark); display: block; }
@@ -148,6 +137,11 @@
         .btn-icon:hover { background: #f9fafb; border-color: var(--primary); color: var(--primary); }
         .btn-icon.delete:hover { border-color: #fca5a5; color: #ef4444; }
 
+        .btn-primary {
+            background: var(--primary); color: white; padding: 12px 20px;
+            border-radius: 10px; font-weight: 600; border: none; cursor: pointer;
+            display: flex; align-items: center; gap: 8px;
+        }
     </style>
 </head>
 <body>
@@ -161,14 +155,8 @@
         <div class="nav-section">
             <p class="nav-label">General</p>
             <nav>
-                <a href="/admin" class="nav-link">
-                    <i class="fa-solid fa-grid-2"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="/admin/listings" class="nav-link">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <span>Inventory</span>
-                </a>
+                <a href="/admin" class="nav-link"><i class="fa-solid fa-table-columns"></i><span>Dashboard</span></a>
+                <a href="/admin/listings" class="nav-link"><i class="fa-solid fa-layer-group"></i><span>Inventory</span></a>
             </nav>
         </div>
 
@@ -177,7 +165,6 @@
             <nav>
                 <a href="/admin/users" class="nav-link active"><i class="fa-solid fa-user-group"></i><span>Users</span></a>
                 <a href="#" class="nav-link"><i class="fa-solid fa-calendar-check"></i><span>Bookings</span></a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-wallet"></i><span>Payouts</span></a>
             </nav>
         </div>
 
@@ -187,7 +174,109 @@
         </a>
     </aside>
 
-    
+    <main>
+        <header class="header-flex">
+            <div>
+                <h1 style="font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;">User Directory</h1>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Management of all users registered in your database.</p>
+            </div>
+            <button class="btn-primary">
+                <i class="fa-solid fa-user-plus"></i> Add User
+            </button>
+        </header>
 
+        <div class="controls-row" style="margin-bottom: 32px;">
+            <div class="card stats-card">
+                <div style="background: #eff6ff; color: var(--primary); padding: 12px; border-radius: 12px;">
+                    <i class="fa-solid fa-users fa-lg"></i>
+                </div>
+                <div>
+                    <span class="prop-info-meta">Total Profiles</span>
+                    <h3 style="font-size: 1.4rem;"><%= allusers.length %></h3>
+                </div>
+            </div>
+            <div class="card stats-card">
+                <div style="background: #fef9c3; color: #854d0e; padding: 12px; border-radius: 12px;">
+                    <i class="fa-solid fa-shield-halved fa-lg"></i>
+                </div>
+
+                <div>
+                    <span class="prop-info-meta">User Listings</span>
+                    <h3 style="font-size: 1.4rem;"><%= alllistings.length %></h3>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="controls-row">
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="userSearch" class="search-input" placeholder="Search by name, phone or location...">
+            </div>
+        </div>
+
+        <div class="card">
+            <table id="userTable">
+                <thead>
+                    <tr>
+                        <th>User & Phone</th>
+                        <th>Address</th>
+                        <th>Location</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if(allusers && allusers.length > 0) { %>
+                        <% allusers.forEach(user => { %>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div class="user-avatar">
+                                            <%= user.Name ? user.Name.charAt(0).toUpperCase() : 'U' %>
+                                        </div>
+                                        <div>
+                                            <span class="prop-info-title"><%= user.Name %></span>
+                                            <span class="prop-info-meta"><i class="fa-solid fa-phone" style="font-size: 10px;"></i> <%= user.PhoneNumber %></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="max-width: 250px;">
+                                    <span style="font-size: 0.85rem; color: var(--text-main);"><%= user.Address %></span>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span class="prop-info-title" style="font-size: 0.85rem;"><%= user.location %></span>
+                                        <span class="prop-info-meta"><%= user.country %></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action-group">
+                                        <button class="btn-icon" title="View Details"><i class="fa-solid fa-eye"></i></button>
+                                        <button class="btn-icon delete" title="Remove"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="4" style="padding: 60px; text-align: center;">
+                                <p style="color: var(--text-muted);">No users found in the database.</p>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('userSearch').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#userTable tbody tr');
+            rows.forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(filter) ? '' : 'none';
+            });
+        });
+    </script>
 </body>
 </html>
