@@ -42,9 +42,6 @@ A robust and intuitive **Human Resource Management System (HRMS)** designed to s
       <h3>Admin sees all listings</h3>
       <img src="ui/adminseeslistings.png" alt="Employee Dashboard" width="100%"/>
     </td>
-    
-  </tr>
-  <tr>
     <td width="50%" align="center">
       <h3>Admin Handle Users</h3>
       <img src="ui/adminusers.png" alt="Employee Dashboard" width="100%"/>
