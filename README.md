@@ -1,10 +1,41 @@
-# 🚀 Human Resource Management System (HRMS)
+🏨 StayFound: Vacation Rentals & Accommodation Platform
+A secure and intuitive Vacation Rental & Accommodation Platform built with the MEN Stack (MongoDB, Express, Node.js). It features strict route protection, user role management, and stateful session tracking to deliver a seamless booking experience.
 
-A robust and intuitive **Human Resource Management System (HRMS)** designed to streamline workplace productivity. This platform empowers administrators to manage employees, track attendance, assign tasks, handle leave requests, and monitor GitHub project submissions all from a centralized dashboard.
+✨ Key Features by Role
+👑 Admin:-
+      Global Moderation: Review, approve, or delete any property listing to maintain platform safety.
+      User Management: View, update, or suspend user, host, and guest accounts.
+      Platform Insights: Track global metrics like total active listings, users, and overall bookings.
 
----
+🏠 Host (Property Owner):-
+      Listing Control: Create, edit, or hide property profiles (pricing, images, amenities).
+      Booking Management: Approve, decline, or track incoming guest reservation requests.
+      Reputation Tracking: Monitor customer feedback and respond to guest reviews.
+
+🧳 Guest (Traveler):-
+      Smart Search: Filter and discover unique accommodations by location, price, and type.
+      Secure Booking: Seamlessly reserve stays and track personal reservation histories.
+      Verified Reviews: Share star ratings and text feedback after completing a stay.
+
+🛠️ Backend & Architecture Highlights:-
+Security Middleware: A centralized "digital bouncer" intercepts sensitive routes, blocking unauthenticated users from making unauthorized database changes.
+Persistent Sessions: Uses express-session to securely remember logged-in users as they navigate between pages.
+Strict Data Isolation: Links listings directly to a specific Host ID via Mongoose, ensuring users can only edit or delete their own data.
+High Performance: Implements async/await patterns to keep database queries non-blocking, ensuring fast server response times.
+Modular Clean Code: Organized into Express routers and reusable EJS front-end components to keep the codebase highly maintainable.
 
 
+🧰 Tech Stack
+Frontend: HTML5, CSS3, JavaScript, EJS Templates
+
+Backend: Node.js, Express.js
+
+Database: MongoDB, Mongoose (ODM)
+
+Security: Express-Session, Custom Auth Middleware
+
+
+--------------------------------------------------------------------------------------------------------------------------
 
 <table width="100%">
   <tr>
@@ -50,32 +81,4 @@ A robust and intuitive **Human Resource Management System (HRMS)** designed to s
   </tr>
 </table>
 
----
-
-
-
-## ✨ Key Features
-
-### 👑 Admin Capabilities
-*   **Centralized Employee Management:** Add, update, suspend, or view detailed profiles of all employees.
-*   **Smart Attendance Tracking:** Monitor daily clock-in/clock-out times, total hours worked, and monthly attendance reports.
-*   **Task Assignment & Monitoring:** Delegate tasks to specific employees with deadlines, priorities, and live status tracking.
-*   **Leave Management System:** Review, approve, or reject employee leave applications with automated status updates.
-*   **GitHub Submission Review:** Track developer code contributions by reviewing repository links and submission logs directly.
-
-### 👤 Employee Capabilities
-*   Mark daily attendance.
-*   View assigned tasks and update project statuses.
-*   Apply for leaves and track approval history.
-*   Submit GitHub repository links for project reviews.
-
----
-
-## 🛠️ Tech Stack
-
-*   **Frontend:** HTML5, CSS3, JavaScript
-*   **Backend:** Django
-*   **Database:** SQlite
-*   **Version Control:** Git & GitHub
-
----
+--------------------------------------------------------------------------------------------------------------------------
