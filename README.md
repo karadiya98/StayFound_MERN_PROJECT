@@ -28,8 +28,11 @@ Modular Clean Code: Organized into Express routers and reusable EJS front-end co
 🧰 Tech Stack
 
 Frontend: HTML5, CSS3, JavaScript, EJS Templates
+
 Backend: Node.js, Express.js
+
 Database: MongoDB, Mongoose (ODM)
+
 Security: Express-Session, Custom Auth Middleware
 
 
